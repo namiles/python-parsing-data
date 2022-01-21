@@ -1,0 +1,31 @@
+{
+    "interfaces": [
+        {
+            "name": "GigabitEthernet0/0",
+            "description": "Uplink 1",
+            "enabled": true,
+            "ipv4": {
+                "address": "10.10.1.1",
+                "mask": "255.255.255.0"
+            }
+        },
+        {
+            "name": "GigabitEthernet0/1",
+            "description": "Uplink 2",
+            "enabled": true,
+            "ipv4": {
+                "address": "10.10.2.1",
+                "mask": "255.255.255.0"
+            }
+        },
+        {
+            "name": "Loopback1",
+            "description": "Loopback",
+            "enabled": true,
+            "ipv4": {
+                "address": "1.1.1.1",
+                "mask": "255.255.255.255"
+            }
+        }
+    ]
+}
