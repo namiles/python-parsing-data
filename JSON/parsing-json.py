@@ -1,53 +1,68 @@
 import json
 
-# JSON
-print("#--------------- Working with JSON ---------------#")
-print()
-
 '''
+Created by Nick Miles
+nicksnetworklab.com
+
 JSON Functions
 
-load()  - Import native JSON and convert to python dictionary from a file
+load()  - Import native JSON from a file and convert to it to a python object
 loads() - Load string. Import JSON data from a string for parsing and manipulating within program
-dump()  - Write JSON data from Python object to a file
+dump()  - Write JSON formatted data from Python object into a file
 dumps() - Dump string. Take JSON dictionary data and convert to a serialized string for parsing and manipulating
 
 '''
 
-with open("interfaces.json") as data:
-    interfacedata = data.read()
+def main():
 
-with open("interfaces.json") as data:
-    interfacedata2 = json.load(data) #load in json data straight into a dict
+    # Load in JSON data using load
+    with open("interfaces.json") as data:
+        interface_data = json.load(data)
 
-#Print raw JSON data string
-print(interfacedata)
-print('type of interfacedata json:', type(interfacedata))
-print(interfacedata2)
-print('type of interfacedata2 json:', type(interfacedata2))
+    #  Load in JSON formatted string
+    with open("interfaces.json") as data:
+        interface_data_string = data.read()
+    
+    print("Type of interface_data_string:", type(interface_data_string))
+    print("Type of interface_data_string:", type(interface_data))
 
-#Convert JSON data into a dictionary
-interfaces_dict = json.loads(interfacedata) #uses loads because interfacedata is a string
-print('type of interface_dict after using loads function:', type(interfaces_dict))
-print()
+    # Convert a JSON formatted string to a python object
+    interfaces_string_object = json.loads(interface_data_string) #uses loads because interfacedata is a string
+    print('Type of interface_data_string after using loads function:', type(interfaces_string_object))
 
-#Print interfaces dictionary
-print(interfaces_dict)
+    '''
+    We can manipulate this JSON data by navigating down the JSON structured and changing the values of the keys. 
+    In this examintple, I changed the descriptions of the two GigabitEthernet interfaces, and the IP address 
+    information of GigabitEthernet0/0.
+    '''
+    # Editing Descriptions
+    print("\nBefore Editing Descriptions")
+    print(interface_data["interfaces"][0]["description"])
+    print(interface_data["interfaces"][1]["description"])
+    interface_data["interfaces"][0]["description"] = "Primary Uplink"
+    interface_data["interfaces"][1]["description"] = "Secondary Uplink"
+    print("After Editing Descriptions")
+    print(interface_data["interfaces"][0]["description"])
+    print(interface_data["interfaces"][1]["description"])
 
-#Modifying Data
-interfaces_dict["interfaces"]["interface1"]["description"] = "Main uplink"
-interfaces_dict["interfaces"]["interface2"]["description"] = "Backup uplink"
-print()
+    # Editing IP Addresses
+    print("\nBefore Editing IPv4 Info")
+    print(interface_data["interfaces"][0]["ipv4"]["address"])
+    print(interface_data["interfaces"][0]["ipv4"]["mask"])
+    interface_data["interfaces"][0]["ipv4"]["address"] = "10.10.1.50"
+    interface_data["interfaces"][0]["ipv4"]["mask"] = "255.255.255.252"
+    print("\nAfter Editing IPv4 Info")
+    print(interface_data["interfaces"][0]["ipv4"]["address"])
+    print(interface_data["interfaces"][0]["ipv4"]["mask"])
 
-#Print dictionary after updating data
-print(interfaces_dict)
-print()
+    # Saving modified JSON data back to a file using dump
+    with open("interfaces_dump.json", "w") as fh:
+        json.dump(interface_data, fh, indent=4) # indent is optional, but helps with improving readability
 
-#Print Individual peices of JSON
-print(interfaces_dict["interfaces"]["interface1"]["ipv4"]["address"])
+    # Loop through and print interfaces
+    for interface in interface_data["interfaces"]:
+        print(interface)
 
-#Saving JSON data back to file
-with open("interfaces.json", "w") as fh:
-    json.dump(interfaces_dict, fh, indent=4) #indent is optional but helps with improving readability
 
-print()
+if __name__ == "__main__":
+    main()
