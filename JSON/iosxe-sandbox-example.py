@@ -34,6 +34,7 @@ def main():
     response = requests.get(url, headers=headers, verify=False, auth=(USER, PASS))
 
     if response.ok:
+        print(response.text)
         response_json = response.json()
 
         # Write the retrieved interface data to a file
@@ -72,8 +73,8 @@ def main():
             }
         }
     )
-    response = requests.post(post_url, headers=post_headers, data=payload)
-    print(response.text)
+    post_response = requests.post(post_url, headers=post_headers, data=payload)
+    print(post_response.text)
 
    # To veift the loopback was created, you can re-run this script. You should get an error saying it has already been created.
    # You will be able to see the newly created loopback interface in the iosxe_interfaces.json file once you re-run it.
